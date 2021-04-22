@@ -27,6 +27,7 @@ Plug 'gruvbox-community/gruvbox'
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'myhere/vim-nodejs-complete'
 call plug#end()
 
 if (has('nvim'))
@@ -53,6 +54,11 @@ if !has('nvim')
   let &t_ZH="\e[3m"
   let &t_ZR="\e[23m"
 endif
+
+fun! ShowTerm()
+        silent !read -sN 1
+        redraw!
+endfun
 "mode lhs rhs
 let mapleader = " "
 noremap <leader>ps : lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})<CR>
@@ -62,6 +68,9 @@ noremap <C-t> :NREDTreeToggle<CR>
 noremap <C-f> :NERDTreeFind<CR>
 noremap <leader>[ :bprevious<CR>
 noremap <leader>] :bnext<CR>
+noremap <leader>sv :vsplit<CR>
+noremap <leader>sh :split<CR>
+noremap <C-`> :call ShowTerm()<CR>
 
 fun! TrimWhitespace()
         let l:save = winsaveview()
@@ -73,4 +82,6 @@ augroup The_PRIMEAGEN
         autocmd!
         autocmd BufWritePre * :call TrimWhitespace()
         autocmd VimEnter * NERDTree
+        autocmd TermOpen * startinsert
+        autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 augroup END
